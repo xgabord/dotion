@@ -56,3 +56,6 @@ Health check: `/health`
 - Notion státusz/prioritás/határidő/projekt/címke/metaadat megőrzése
 - Dorina Pap → Dorka, Gábor Darvas → Gabi, Vera Kováts → Vera, Biaa → Bianka
 - régi Dotion demo feladatok, tartalmak, termékek, Inbox és jegyzetek egyszeri törlése/import-migráció
+
+
+- v0.3.3 mobile hotfix: safe client render, cache busting, mobile overflow/sidebar fixes.
