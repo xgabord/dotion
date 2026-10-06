@@ -57,6 +57,7 @@ function renderHome(){
   (isAdmin()?teamOverview(tasks):"")+
   `<div class="section"><div class="section-title"><h2>Közelgő tartalom</h2><button class="text-btn" onclick="go('content')">Tartalom →</button></div>${contentList(d.content.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).slice(0,5))}</div>`;
   bindInlineEditors();
+  bindContentEditors();
 }
 function teamOverview(tasks){
   const cards=users().map(u=>{const all=tasks.filter(t=>t.assignee===u.id),open=all.filter(t=>t.status!=="Kész"),done=all.filter(t=>t.status==="Kész"),progress=all.filter(t=>t.status==="Folyamatban");return `<div class="team-card"><div class="team-card-head"><div class="avatar">${esc(u.avatar)}</div><div><strong>${esc(u.name)}</strong><span>${open.length} nyitott · ${done.length} kész</span></div></div><div class="team-progress"><i style="width:${all.length?Math.round(done.length/all.length*100):0}%"></i></div><div class="team-status"><span>${tag(progress.length+" folyamatban","progress")}</span><span>${tag(open.filter(t=>t.priority==="Sürgős").length+" sürgős","urgent")}</span></div><div class="team-mini-list">${open.slice(0,4).map(t=>`<button class="mini-task" data-open-task="${t.id}"><span>${esc(t.title)}</span>${tag(t.status,statusClass(t.status))}</button>`).join("")||'<span class="muted small">Nincs nyitott feladat.</span>'}</div></div>`}).join("");
