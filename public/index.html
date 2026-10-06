@@ -21,7 +21,7 @@
 
   <div id="app" class="app-shell hidden">
     <aside id="sidebar" class="sidebar">
-      <div class="workspace-head"><div class="workspace-icon">L</div><strong>LAAVA Workspace</strong><button id="collapseBtn" class="icon-btn">‹</button></div>
+      <div class="workspace-head"><div class="workspace-icon">L</div><strong>LAAVA Workspace</strong><button id="collapseBtn" class="icon-btn desktop-collapse" aria-label="Oldalsáv összecsukása">‹</button><button id="mobileSidebarClose" class="icon-btn mobile-sidebar-close" aria-label="Menü bezárása">×</button></div>
       <button class="nav-item" data-view="search"><span>⌕</span><b>Keresés</b><kbd>⌘K</kbd></button>
       <button class="nav-item active" data-view="home"><span>⌂</span><b>Kezdőlap</b></button>
       <button class="nav-item" data-view="tasks"><span>✓</span><b>Feladatok</b></button>
@@ -41,6 +41,7 @@
       <div class="sidebar-spacer"></div>
       <div id="meBox" class="me-box"></div>
     </aside>
+    <button id="mobileSidebarBackdrop" class="mobile-sidebar-backdrop" aria-label="Menü bezárása"></button>
 
     <main class="main">
       <header class="topbar">
