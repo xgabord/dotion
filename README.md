@@ -2,9 +2,9 @@
 
 Minimalista, Notion-like belső workspace a LAAVA / MATÉZZ / Matchai napi operációjához.
 
-## MVP v0.1
+## MVP v0.2
 
-- több felhasználós, jelszó nélküli belépés
+- több felhasználós, jelszó nélküli belépés (Dorka és Gabi admin)
 - Home dashboard
 - Task lista + Kanban
 - státusz / prioritás / felelős / határidő
@@ -39,3 +39,12 @@ Health check: `/health`
 - Ajánlott env:
   - `PORT=3004`
 
+
+
+### v0.2
+
+- admin/member jogosultság és saját feladatos korlátozás
+- admin kezdőlapi csapatáttekintő
+- inline task/content/product/inbox/note szerkesztés
+- márka faviconok
+- javított, csak a sidebar szélességét érintő összecsukás
