@@ -5,18 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#fbfbfa">
   <title>Dotion</title>
-  <link rel="stylesheet" href="/styles.css?v=0.3.3">
+  <link rel="stylesheet" href="/styles.css?v=0.3.4">
 </head>
 <body>
   <div id="login" class="login-screen hidden">
-    <form id="loginForm" class="login-card">
-      <div class="brand-mark">D</div>
-      <h1>Dotion</h1>
-      <p>LAAVA Workspace</p>
-      <select id="loginUser"></select>
-      <button type="submit" class="primary">Belépés</button>
+    <div class="profile-login">
+      <div class="profile-login-brand">Dotion</div>
+      <h1>Ki használja a Dotiont?</h1>
+      <div id="loginProfiles" class="profile-grid"></div>
       <div id="loginError" class="form-error"></div>
-    </form>
+      <div class="login-version">v0.3.4</div>
+    </div>
   </div>
 
   <div id="app" class="app-shell hidden">
@@ -69,6 +68,6 @@
     </div>
   </div>
 
-  <script src="/app.js?v=0.3.3"></script>
+  <script src="/app.js?v=0.3.4"></script>
 </body>
 </html>
