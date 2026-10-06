@@ -10,7 +10,7 @@ const fmt=d=>d?new Intl.DateTimeFormat("hu-HU",{month:"short",day:"numeric"}).fo
 const statusClass=s=>s==="Kész"||s==="Publikálva"?"done":s==="Folyamatban"?"progress":s==="Várakozik"?"wait":"";
 const priorityClass=p=>p==="Sürgős"?"urgent":p==="Fontos"?"important":"";
 const brandSites={LAAVA:"https://laava.hu",MATÉZZ:"https://matezz.hu",Matchai:"https://matchai.hu"};
-const brandIcon=brand=>`<img class="brand-favicon" src="${brandSites[brand]||""}/favicon.ico" alt="" onerror="this.style.display='none'">`;
+const brandIcon=brand=>{const site=brandSites[brand]||"";const domain=site.replace("https://","").replace("http://","");return `<img class="brand-favicon" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32" alt="">`};
 const tag=(text,cls="")=>`<span class="tag ${cls}">${esc(text)}</span>`;
 
 async function boot(){
