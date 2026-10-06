@@ -4,7 +4,7 @@ Minimalista, Notion-like belső workspace a LAAVA / MATÉZZ / Matchai napi oper�
 
 ## MVP v0.1
 
-- több felhasználós login
+- több felhasználós, jelszó nélküli belépés
 - Home dashboard
 - Task lista + Kanban
 - státusz / prioritás / felelős / határidő
@@ -25,7 +25,7 @@ A fókusz a specifikáció fő elve: **megnyitom → látom mit kell csinálnom 
 
 ```bash
 npm install
-PORT=3004 APP_PASSWORD="..." npm start
+PORT=3004 npm start
 ```
 
 Health check: `/health`
@@ -38,6 +38,4 @@ Health check: `/health`
 - Node: 22+
 - Ajánlott env:
   - `PORT=3004`
-  - `APP_PASSWORD=<belső jelszó>`
 
-Ha `APP_PASSWORD` nincs megadva, fejlesztői fallbackként a jelszó `dotion`.
