@@ -117,7 +117,7 @@ function publicDataFor(user, data) {
 }
 
 app.get("/health", function(req,res) {
-  res.json({ ok:true, app:"dotion", version:"0.3.1", port:PORT });
+  res.json({ ok:true, app:"dotion", version:"0.3.2", port:PORT });
 });
 app.get("/api/auth/users", function(req,res) {
   res.json(users.map(function(u) { return { id:u.id, name:u.name, avatar:u.avatar }; }));
