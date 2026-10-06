@@ -59,3 +59,5 @@ Health check: `/health`
 
 
 - v0.3.3 mobile hotfix: safe client render, cache busting, mobile overflow/sidebar fixes.
+
+- v0.3.4 consolidated deploy: Safari render fix, API no-cache, profile-tile login, version display.
