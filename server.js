@@ -4,6 +4,7 @@ const path = require("path");
 const crypto = require("crypto");
 
 const app = express();
+app.disable("etag");
 const PORT = Number(process.env.PORT || 3004);
 const DATA_DIR = path.join(__dirname, ".data");
 const DATA_FILE = path.join(DATA_DIR, "dotion.json");
@@ -12,6 +13,12 @@ const sessions = new Map();
 
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: false }));
+app.use("/api", function(req,res,next) {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  next();
+});
 
 const users = [
   { id: "dorka", name: "Dorka", avatar: "D", role: "admin" },
@@ -117,7 +124,7 @@ function publicDataFor(user, data) {
 }
 
 app.get("/health", function(req,res) {
-  res.json({ ok:true, app:"dotion", version:"0.3.3", port:PORT });
+  res.json({ ok:true, app:"dotion", version:"0.3.4", port:PORT });
 });
 app.get("/api/auth/users", function(req,res) {
   res.json(users.map(function(u) { return { id:u.id, name:u.name, avatar:u.avatar }; }));
