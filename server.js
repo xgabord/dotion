@@ -14,27 +14,28 @@ app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: false }));
 
 const users = [
-  { id: "gabor", name: "Gábor", avatar: "G" },
   { id: "dorka", name: "Dorka", avatar: "D" },
-  { id: "anna", name: "Anna", avatar: "A" }
+  { id: "gabi", name: "Gabi", avatar: "G" },
+  { id: "vera", name: "Vera", avatar: "V" },
+  { id: "bianka", name: "Bianka", avatar: "B" }
 ];
 
 const seed = {
   tasks: [
     { id: "t1", title: "Instagram Reel publikálása", brand: "MATÉZZ", area: "Social Media", assignee: "dorka", status: "Folyamatban", priority: "Fontos", due: "2026-10-08", platform: ["Instagram","TikTok"], notes: "Tereré videó, rövid edukációs szöveggel.", checklist: [{id:"c1",text:"videó felvéve",done:true},{id:"c2",text:"felirat",done:false},{id:"c3",text:"cover",done:false},{id:"c4",text:"publikálás",done:false}], comments: [] },
-    { id: "t2", title: "Új yerba termék feltöltése", brand: "MATÉZZ", area: "Termékfeltöltés", assignee: "anna", status: "Teendő", priority: "Normál", due: "2026-10-09", platform: [], notes: "", checklist: [], comments: [] },
+    { id: "t2", title: "Új yerba termék feltöltése", brand: "MATÉZZ", area: "Termékfeltöltés", assignee: "vera", status: "Teendő", priority: "Normál", due: "2026-10-09", platform: [], notes: "", checklist: [], comments: [] },
     { id: "t3", title: "Hétvégi newsletter előkészítése", brand: "LAAVA", area: "Hírlevél", assignee: "dorka", status: "Teendő", priority: "Fontos", due: "2026-10-10", platform: [], notes: "", checklist: [], comments: [] },
-    { id: "t4", title: "Canarias készletet ellenőrizni", brand: "MATÉZZ", area: "Webshop", assignee: "gabor", status: "Várakozik", priority: "Sürgős", due: "2026-10-07", platform: [], notes: "", checklist: [], comments: [] }
+    { id: "t4", title: "Canarias készletet ellenőrizni", brand: "MATÉZZ", area: "Webshop", assignee: "gabi", status: "Várakozik", priority: "Sürgős", due: "2026-10-07", platform: [], notes: "", checklist: [], comments: [] }
   ],
   content: [
     { id:"ct1", title:"Tereré Reel", brand:"MATÉZZ", platform:["Instagram","TikTok"], status:"Szerkesztés", date:"2026-10-08", assignee:"dorka" },
     { id:"ct2", title:"Új karkötő fotó", brand:"LAAVA", platform:["Instagram"], status:"Jóváhagyás", date:"2026-10-09", assignee:"dorka" },
-    { id:"ct3", title:"Matcha recept", brand:"Matchai", platform:["Instagram"], status:"Ötlet", date:"2026-10-11", assignee:"anna" }
+    { id:"ct3", title:"Matcha recept", brand:"Matchai", platform:["Instagram"], status:"Ötlet", date:"2026-10-11", assignee:"vera" }
   ],
   products: [
-    { id:"p1", name:"Canarias Serena", brand:"MATÉZZ", sku:"", assignee:"anna", status:"Feltöltés alatt", checklist:{photo:true,description:true,price:true,category:true,attributes:false,seo:false,stock:true,published:false} },
+    { id:"p1", name:"Canarias Serena", brand:"MATÉZZ", sku:"", assignee:"vera", status:"Feltöltés alatt", checklist:{photo:true,description:true,price:true,category:true,attributes:false,seo:false,stock:true,published:false} },
     { id:"p2", name:"Ametiszt karkötő", brand:"LAAVA", sku:"", assignee:"dorka", status:"Fotózás", checklist:{photo:false,description:true,price:true,category:true,attributes:true,seo:false,stock:true,published:false} },
-    { id:"p3", name:"Ceremonial Matcha", brand:"Matchai", sku:"", assignee:"gabor", status:"Publikálva", checklist:{photo:true,description:true,price:true,category:true,attributes:true,seo:true,stock:true,published:true} }
+    { id:"p3", name:"Ceremonial Matcha", brand:"Matchai", sku:"", assignee:"gabi", status:"Publikálva", checklist:{photo:true,description:true,price:true,category:true,attributes:true,seo:true,stock:true,published:true} }
   ],
   inbox: [
     { id:"i1", text:"Új MATÉZZ TikTok ötlet", createdAt:new Date().toISOString() },
