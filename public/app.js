@@ -1,4 +1,4 @@
-const APP_VERSION="0.3.4";
+const APP_VERSION="0.3.5";
 let state={data:null,me:null,view:"home",taskMode:"list",brandFilter:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const api=async(url,opt={})=>{const r=await fetch(url,{cache:"no-store",headers:{"Content-Type":"application/json",...(opt.headers||{})},...opt});if(r.status===401){showLogin();throw new Error("unauthorized")}if(r.status===204)return null;const text=await r.text();const j=text?JSON.parse(text):{};if(!r.ok)throw new Error(j.error||"Hiba");return j};
@@ -53,7 +53,7 @@ function renderBrandNav(){
 }
 function bind(){
   $$(".nav-item[data-view]").forEach(b=>b.onclick=()=>go(b.dataset.view));
-  $(".filter-brand").forEach(b=>b.onclick=()=>{state.brandFilter=b.dataset.brand;go("tasks")});
+  $$(".filter-brand").forEach(b=>b.onclick=()=>{state.brandFilter=b.dataset.brand;go("tasks")});
   $("#collapseBtn").onclick=()=>{const shell=$("#app");shell.classList.toggle("sidebar-collapsed");localStorage.setItem("dotion-sidebar-collapsed",shell.classList.contains("sidebar-collapsed")?"1":"0")};
   $("#mobileSidebarClose").onclick=()=>$("#sidebar").classList.remove("open");
   $("#mobileSidebarBackdrop").onclick=()=>$("#sidebar").classList.remove("open");
