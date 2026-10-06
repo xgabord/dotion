@@ -117,7 +117,7 @@ function publicDataFor(user, data) {
 }
 
 app.get("/health", function(req,res) {
-  res.json({ ok:true, app:"dotion", version:"0.3.2", port:PORT });
+  res.json({ ok:true, app:"dotion", version:"0.3.3", port:PORT });
 });
 app.get("/api/auth/users", function(req,res) {
   res.json(users.map(function(u) { return { id:u.id, name:u.name, avatar:u.avatar }; }));
@@ -232,6 +232,14 @@ app.post("/api/tasks/:id/comments", requireAuth, function(req,res) {
   res.status(201).json(comment);
 });
 
+app.use(function(req,res,next) {
+  if (req.path === "/" || req.path === "/app.js" || req.path === "/styles.css") {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+  }
+  next();
+});
 app.use(express.static(path.join(__dirname, "public")));
 app.use(function(req,res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
