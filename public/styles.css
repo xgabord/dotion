@@ -39,3 +39,31 @@ html,body{max-width:100%;overflow-x:hidden}
 }
 
 .render-error{max-width:520px;margin:48px auto;padding:20px;border:1px solid var(--border);border-radius:10px;background:#fff;display:grid;gap:10px}.render-error strong{font-size:15px}.render-error span{font-size:12px;color:#a63830;overflow-wrap:anywhere}.render-error button{justify-self:start}
+
+/* v0.3.4 profile login */
+.login-screen{min-height:100vh;background:#141414;color:#fff;display:grid;place-items:center;padding:32px 20px}
+.profile-login{width:min(760px,100%);text-align:center}
+.profile-login-brand{font-size:24px;font-weight:700;letter-spacing:-.03em;margin-bottom:48px}
+.profile-login h1{font-size:34px;font-weight:500;letter-spacing:-.03em;margin:0 0 34px;color:#f5f5f5}
+.profile-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;max-width:680px;margin:0 auto}
+.profile-tile{border:0;background:transparent;color:#aaa;padding:0;display:grid;gap:10px;justify-items:center;min-width:0}
+.profile-tile:disabled{opacity:.5;cursor:wait}
+.profile-avatar{width:100%;aspect-ratio:1/1;max-width:145px;border-radius:8px;display:grid;place-items:center;font-size:42px;font-weight:650;color:#fff;border:3px solid transparent;transition:border-color .15s,transform .15s;background:linear-gradient(145deg,#343434,#222)}
+.profile-tile:nth-child(2) .profile-avatar{background:linear-gradient(145deg,#4b4b4b,#292929)}
+.profile-tile:nth-child(3) .profile-avatar{background:linear-gradient(145deg,#2f2f2f,#1b1b1b)}
+.profile-tile:nth-child(4) .profile-avatar{background:linear-gradient(145deg,#555,#303030)}
+.profile-name{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.profile-tile:hover .profile-avatar,.profile-tile:focus-visible .profile-avatar{border-color:#fff;transform:scale(1.02)}
+.profile-tile:hover .profile-name,.profile-tile:focus-visible .profile-name{color:#fff}
+.profile-tile:focus-visible{outline:0}
+.profile-login .form-error{min-height:18px;margin-top:24px;color:#ff8f87}
+.login-version{margin-top:36px;color:#666;font-size:12px;letter-spacing:.04em}
+@media(max-width:600px){
+  .login-screen{padding:28px 24px}
+  .profile-login-brand{margin-bottom:42px;font-size:22px}
+  .profile-login h1{font-size:27px;margin-bottom:30px}
+  .profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 22px;max-width:330px}
+  .profile-avatar{max-width:132px;font-size:36px}
+  .profile-name{font-size:14px}
+  .login-version{margin-top:34px}
+}
