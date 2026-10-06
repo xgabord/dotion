@@ -1,6 +1,6 @@
 {
   "name": "dotion",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "description": "Minimal LAAVA Workspace for tasks, content and product operations",
   "main": "server.js",
