@@ -149,7 +149,7 @@ app.post("/api/tasks/:id/comments", requireAuth, (req,res) => {
 });
 
 app.use(express.static(path.join(__dirname, "public")));
-app.get("*", (req,res) => res.sendFile(path.join(__dirname, "public", "index.html")));
+app.use((req,res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
 ensureData();
 app.listen(PORT, "0.0.0.0", () => console.log(`Dotion listening on :${PORT}`));
