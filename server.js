@@ -84,9 +84,7 @@ app.get("/api/auth/users", (req,res) => res.json(users));
 app.get("/api/auth/me", (req,res) => res.json({ user:currentUser(req) }));
 app.post("/api/auth/login", (req,res) => {
   const user = users.find(u => u.id === req.body.userId);
-  const password = String(req.body.password || "");
-  const expected = process.env.APP_PASSWORD || "dotion";
-  if (!user || password !== expected) return res.status(401).json({ error:"Hibás belépés" });
+  if (!user) return res.status(401).json({ error:"Hibás felhasználó" });
   const token = crypto.randomBytes(24).toString("hex");
   sessions.set(token, user.id);
   res.setHeader("Set-Cookie", `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`);
