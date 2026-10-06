@@ -88,3 +88,34 @@ body.drawer-open{overflow:hidden}
   .home-task-status .tag{max-width:100px;overflow:hidden;text-overflow:ellipsis}
   .drawer{top:0;bottom:0;height:100dvh;max-height:100dvh;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch}
 }
+
+/* v0.3.7 mobile topbar controls */
+@media(max-width:850px){
+  .topbar{height:62px;padding:0 13px;gap:8px}
+  .topbar .icon-btn{width:40px;min-width:40px;height:40px;border-radius:9px;font-size:22px;display:grid;place-items:center;padding:0}
+  #mobileMenu{font-size:23px;font-weight:600}
+  #searchBtn{font-size:24px}
+  #quickTop{min-height:40px;padding:0 14px;border-radius:9px;font-size:14px}
+  .top-actions{gap:7px}
+  .breadcrumb{font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .drawer-close,
+  .mobile-sidebar-close{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    border-radius:50%!important;
+    background:#111!important;
+    color:#fff!important;
+    font-size:25px!important;
+    font-weight:400!important;
+    line-height:1!important;
+    display:grid!important;
+    place-items:center!important;
+    padding:0!important;
+  }
+  .drawer-close:hover,
+  .mobile-sidebar-close:hover{background:#000!important}
+  .drawer-close{right:14px;top:12px;position:sticky;float:right;z-index:4}
+  .mobile-sidebar-close{margin-left:auto}
+}
