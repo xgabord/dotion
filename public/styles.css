@@ -67,3 +67,24 @@ html,body{max-width:100%;overflow-x:hidden}
   .profile-name{font-size:14px}
   .login-version{margin-top:34px}
 }
+
+/* v0.3.6 lightweight homepage tasks + iOS drawer */
+.home-task-list{border-top:1px solid var(--border)}
+.home-task-row{width:100%;display:grid;grid-template-columns:18px minmax(0,1fr) auto 74px;gap:10px;align-items:center;min-height:46px;padding:7px 5px;border:0;border-bottom:1px solid var(--border);background:transparent;text-align:left}
+.home-task-row:hover{background:#fafaf9}
+.home-task-check{width:17px;height:17px;border:1px solid #cbc9c5;border-radius:4px;display:grid;place-items:center;font-size:11px}
+.home-task-check.done{background:#262624;color:#fff}
+.home-task-main{min-width:0;display:flex;flex-direction:column}
+.home-task-main strong{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-task-main small{font-size:10px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-task-status{min-width:0}
+.home-task-due{font-size:11px;color:#999;text-align:right}
+body.drawer-open{overflow:hidden}
+.drawer{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;max-height:100dvh;height:100dvh}
+@supports not (height:100dvh){.drawer{height:100vh;max-height:100vh}}
+@media(max-width:850px){
+  .home-task-row{grid-template-columns:18px minmax(0,1fr) auto;gap:8px;padding:8px 3px}
+  .home-task-due{display:none}
+  .home-task-status .tag{max-width:100px;overflow:hidden;text-overflow:ellipsis}
+  .drawer{top:0;bottom:0;height:100dvh;max-height:100dvh;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch}
+}
