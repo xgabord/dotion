@@ -1,6 +1,7 @@
+const APP_VERSION="0.3.4";
 let state={data:null,me:null,view:"home",taskMode:"list",brandFilter:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const api=async(url,opt={})=>{const r=await fetch(url,{headers:{"Content-Type":"application/json",...(opt.headers||{})},...opt});if(r.status===401){showLogin();throw new Error("unauthorized")}const j=await r.json();if(!r.ok)throw new Error(j.error||"Hiba");return j};
+const api=async(url,opt={})=>{const r=await fetch(url,{cache:"no-store",headers:{"Content-Type":"application/json",...(opt.headers||{})},...opt});if(r.status===401){showLogin();throw new Error("unauthorized")}if(r.status===204)return null;const text=await r.text();const j=text?JSON.parse(text):{};if(!r.ok)throw new Error(j.error||"Hiba");return j};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
 const users=()=>state.data?.users||[];
 const me=()=>state.me||{};
@@ -15,7 +16,7 @@ const tag=(text,cls="")=>`<span class="tag ${cls}">${esc(text)}</span>`;
 const preview=(text,max=88)=>{const s=String(text||"").replace(/\s+/g," ").trim();return s.length>max?s.slice(0,max-1).trimEnd()+"…":s};
 
 async function boot(){
-  const auth=await fetch("/api/auth/me").then(r=>r.json());
+  const auth=await fetch("/api/auth/me",{cache:"no-store"}).then(r=>r.json());
   if(!auth.user)return showLogin();
   await load();
   $("#app").classList.remove("hidden");
@@ -25,11 +26,28 @@ async function boot(){
 }
 async function load(){state.data=await api("/api/data");state.me=state.data.me;renderMe();renderBrandNav()}
 function showLogin(){
-  $("#app").classList.add("hidden");$("#login").classList.remove("hidden");
-  fetch("/api/auth/users").then(r=>r.json()).then(list=>{$("#loginUser").innerHTML=list.map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join("")});
+  $("#app").classList.add("hidden");
+  $("#login").classList.remove("hidden");
+  $("#loginError").textContent="";
+  fetch("/api/auth/users",{cache:"no-store"})
+    .then(r=>r.json())
+    .then(list=>{
+      $("#loginProfiles").innerHTML=list.map(u=>`<button class="profile-tile" type="button" data-login-user="${u.id}"><span class="profile-avatar">${esc(u.avatar||u.name?.[0]||"?")}</span><span class="profile-name">${esc(u.name)}</span></button>`).join("");
+      $$("[data-login-user]").forEach(btn=>btn.onclick=async()=>{
+        $("#loginError").textContent="";
+        $$(".profile-tile").forEach(x=>x.disabled=true);
+        try{
+          await api("/api/auth/login",{method:"POST",body:JSON.stringify({userId:btn.dataset.loginUser})});
+          await boot();
+        }catch(err){
+          $("#loginError").textContent="Sikertelen belépés";
+          $$(".profile-tile").forEach(x=>x.disabled=false);
+        }
+      });
+    })
+    .catch(()=>{$("#loginError").textContent="A profilok nem tölthetők be.";});
 }
-$("#loginForm").addEventListener("submit",async e=>{e.preventDefault();$("#loginError").textContent="";try{await api("/api/auth/login",{method:"POST",body:JSON.stringify({userId:$("#loginUser").value})});await boot()}catch(err){$("#loginError").textContent="Sikertelen belépés"}});
-function renderMe(){if(!state.me)return;$("#meBox").innerHTML=`<div class="avatar">${esc(state.me.avatar)}</div><span><b>${esc(state.me.name)}</b><small>${isAdmin()?"Admin":"Felhasználó"}</small></span><button class="logout" id="logoutBtn">Kilépés</button>`;$("#logoutBtn").onclick=async()=>{await api("/api/auth/logout",{method:"POST"});location.reload()}}
+function renderMe(){if(!state.me)return;$("#meBox").innerHTML=`<div class="avatar">${esc(state.me.avatar)}</div><span><b>${esc(state.me.name)}</b><small>${isAdmin()?"Admin":"Felhasználó"} · v${APP_VERSION}</small></span><button class="logout" id="logoutBtn">Kilépés</button>`;$("#logoutBtn").onclick=async()=>{await api("/api/auth/logout",{method:"POST"});location.reload()}}
 function renderBrandNav(){
   $$(".filter-brand").forEach(b=>{const brand=b.dataset.brand;const icon=b.querySelector(".brand-nav-icon");if(icon)icon.innerHTML=brandIcon(brand)})
 }
