@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fbfbfa">
+  <title>Dotion</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="login" class="login-screen hidden">
+    <form id="loginForm" class="login-card">
+      <div class="brand-mark">D</div>
+      <h1>Dotion</h1>
+      <p>LAAVA Workspace</p>
+      <select id="loginUser"></select>
+      <input id="loginPassword" type="password" placeholder="Jelszó" autocomplete="current-password">
+      <button type="submit" class="primary">Belépés</button>
+      <div id="loginError" class="form-error"></div>
+    </form>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="workspace-head"><div class="workspace-icon">L</div><strong>LAAVA Workspace</strong><button id="collapseBtn" class="icon-btn">‹</button></div>
+      <button class="nav-item" data-view="search"><span>⌕</span><b>Keresés</b><kbd>⌘K</kbd></button>
+      <button class="nav-item active" data-view="home"><span>⌂</span><b>Kezdőlap</b></button>
+      <button class="nav-item" data-view="tasks"><span>✓</span><b>Feladatok</b></button>
+      <button class="nav-item" data-view="content"><span>▦</span><b>Tartalom</b></button>
+      <button class="nav-item" data-view="inbox"><span>↓</span><b>Inbox</b></button>
+
+      <div class="section-label">MÁRKÁK</div>
+      <button class="nav-item filter-brand" data-brand="LAAVA"><span>◆</span><b>LAAVA</b></button>
+      <button class="nav-item filter-brand" data-brand="MATÉZZ"><span>◉</span><b>MATÉZZ</b></button>
+      <button class="nav-item filter-brand" data-brand="Matchai"><span>●</span><b>Matchai</b></button>
+
+      <div class="section-label">TERÜLETEK</div>
+      <button class="nav-item" data-view="products"><span>□</span><b>Termékek</b></button>
+      <button class="nav-item" data-view="notes"><span>≡</span><b>Jegyzetek</b></button>
+
+      <div class="sidebar-spacer"></div>
+      <div id="meBox" class="me-box"></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="mobileMenu" class="icon-btn mobile-only">☰</button>
+        <div id="breadcrumb" class="breadcrumb">Kezdőlap</div>
+        <div class="top-actions"><button id="searchBtn" class="icon-btn">⌕</button><button id="quickTop" class="primary compact">+ Új</button></div>
+      </header>
+      <section id="contentRoot" class="content-root"></section>
+    </main>
+
+    <button id="quickFab" class="fab">+</button>
+
+    <div id="drawerBackdrop" class="backdrop hidden"></div>
+    <aside id="drawer" class="drawer hidden"></aside>
+
+    <div id="quickMenu" class="quick-menu hidden">
+      <button data-kind="task">✓ Új feladat</button>
+      <button data-kind="content">▦ Új tartalom</button>
+      <button data-kind="idea">✦ Új tartalomötlet</button>
+      <button data-kind="note">≡ Új jegyzet</button>
+    </div>
+
+    <div id="modalBackdrop" class="modal-backdrop hidden">
+      <div id="modal" class="modal"></div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
