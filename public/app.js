@@ -1,4 +1,4 @@
-const APP_VERSION="0.3.6";
+const APP_VERSION="0.3.7";
 let state={data:null,me:null,view:"home",taskMode:"list",brandFilter:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const api=async(url,opt={})=>{const r=await fetch(url,{cache:"no-store",headers:{"Content-Type":"application/json",...(opt.headers||{})},...opt});if(r.status===401){showLogin();throw new Error("unauthorized")}if(r.status===204)return null;const text=await r.text();const j=text?JSON.parse(text):{};if(!r.ok)throw new Error(j.error||"Hiba");return j};
