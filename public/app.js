@@ -1,4 +1,4 @@
-const APP_VERSION="0.3.5";
+const APP_VERSION="0.3.6";
 let state={data:null,me:null,view:"home",taskMode:"list",brandFilter:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const api=async(url,opt={})=>{const r=await fetch(url,{cache:"no-store",headers:{"Content-Type":"application/json",...(opt.headers||{})},...opt});if(r.status===401){showLogin();throw new Error("unauthorized")}if(r.status===204)return null;const text=await r.text();const j=text?JSON.parse(text):{};if(!r.ok)throw new Error(j.error||"Hiba");return j};
@@ -78,14 +78,21 @@ function render(){
 function pageHead(title,sub=""){return `<div class="page-head"><div><h1>${esc(title)}</h1><p>${esc(sub)}</p></div><div class="date-label">${new Intl.DateTimeFormat("hu-HU",{year:"numeric",month:"long",day:"numeric"}).format(new Date())}</div></div>`}
 function visibleTasks(){return Array.isArray(state.data?.tasks)?state.data.tasks:[]}
 function collection(name){return Array.isArray(state.data?.[name])?state.data[name]:[]}
+function homeTaskList(tasks){
+  const rows=(tasks||[]).filter(Boolean).slice(0,12).map(t=>`<button class="home-task-row" data-open-task="${t.id}"><span class="home-task-check ${t.status==="Kész"?"done":""}">${t.status==="Kész"?"✓":""}</span><span class="home-task-main"><strong>${esc(preview(t.title,78))}</strong><small>${esc(t.brand||"Közös")} · ${esc(t.area||"Egyéb")}</small></span><span class="home-task-status">${tag(t.status,statusClass(t.status))}</span><span class="home-task-due">${esc(fmt(t.due))}</span></button>`).join("");
+  return `<div class="home-task-list">${rows||'<div class="empty-row">Nincs nyitott feladat.</div>'}</div>`;
+}
+function bindHomeTasks(){
+  $$(".home-task-row,[data-open-task].mini-task").forEach(b=>b.onclick=e=>{e.preventDefault();e.stopPropagation();document.activeElement?.blur?.();openTask(b.dataset.openTask)});
+}
 function renderHome(){
   const d=state.data||{},tasks=visibleTasks().filter(Boolean),open=tasks.filter(t=>t.status!=="Kész"),mine=open.filter(t=>t.assignee===state.me?.id),social=open.filter(t=>t.area==="Social Media"),urgent=open.filter(t=>t.priority==="Sürgős");
   const stats=isAdmin()?`<div class="stats"><div class="stat"><span>Nyitott feladat</span><strong>${open.length}</strong></div><div class="stat"><span>Social media</span><strong>${social.length}</strong></div><div class="stat"><span>Saját feladat</span><strong>${mine.length}</strong></div><div class="stat"><span>Sürgős</span><strong>${urgent.length}</strong></div></div>`:`<div class="stats member-stats"><div class="stat"><span>Nyitott feladatom</span><strong>${open.length}</strong></div><div class="stat"><span>Folyamatban</span><strong>${open.filter(t=>t.status==="Folyamatban").length}</strong></div><div class="stat"><span>Határidős</span><strong>${open.filter(t=>t.due).length}</strong></div><div class="stat"><span>Sürgős</span><strong>${urgent.length}</strong></div></div>`;
   $("#contentRoot").innerHTML=pageHead("Ma",isAdmin()?"Saját és csapatfeladatok egy helyen.":"A saját feladataid, sallang nélkül.")+stats+
-  `<div class="section"><div class="section-title"><h2>Saját feladataim</h2><button class="text-btn" onclick="go('tasks')">Összes →</button></div>${taskList(mine,false)}</div>`+
+  `<div class="section"><div class="section-title"><h2>Saját feladataim</h2><button class="text-btn" onclick="go('tasks')">Összes →</button></div>${homeTaskList(mine)}</div>`+
   (isAdmin()?teamOverview(tasks):"")+
   `<div class="section"><div class="section-title"><h2>Közelgő tartalom</h2><button class="text-btn" onclick="go('content')">Tartalom →</button></div>${contentList(collection("content").filter(Boolean).slice().sort((a,b)=>(a?.date||"").localeCompare(b?.date||"")).slice(0,5))}</div>`;
-  bindInlineEditors();
+  bindHomeTasks();
   bindContentEditors();
 }
 function teamOverview(tasks){
@@ -127,7 +134,10 @@ function renderSearch(){$("#contentRoot").innerHTML=pageHead("Keresés","Feladat
 function doSearch(q){q=q.trim().toLowerCase();if(!q)return $("#searchResults").innerHTML="";const sets=[["Feladatok",visibleTasks(),"title"],["Tartalom",collection("content"),"title"],["Termékek",collection("products"),"name"],["Jegyzetek",collection("notes"),"title"]];$("#searchResults").innerHTML=sets.map(([name,list,key])=>{const hits=list.filter(x=>JSON.stringify(x).toLowerCase().includes(q));return hits.length?`<div class="search-group"><div class="section-title"><h2>${name}</h2></div>${hits.map(x=>`<div class="search-hit" title="${esc(x[key])}">${esc(preview(x[key],100))}<div class="small muted">${esc(x.brand||"")}</div></div>`).join("")}</div>`:""}).join("")||`<div class="muted">Nincs találat.</div>`}
 function openTask(id){
  const t=visibleTasks().find(x=>x.id===id);if(!t)return;
+ document.activeElement?.blur?.();
+ document.body.classList.add("drawer-open");
  $("#drawerBackdrop").classList.remove("hidden");$("#drawer").classList.remove("hidden");
+ $("#drawer").scrollTop=0;
  $("#drawer").innerHTML=`<button class="icon-btn drawer-close" id="drawerClose">×</button><input class="drawer-title" id="taskTitle" value="${esc(t.title)}"><div class="props"><label>Márka</label><select class="field" id="taskBrand">${["LAAVA","MATÉZZ","Matchai","Közös"].map(x=>`<option ${x===t.brand?"selected":""}>${x}</option>`).join("")}</select><label>Státusz</label><select class="field" id="taskStatus">${["Teendő","Folyamatban","Várakozik","Kész"].map(x=>`<option ${x===t.status?"selected":""}>${x}</option>`).join("")}</select><label>Prioritás</label><select class="field" id="taskPriority">${["Normál","Fontos","Sürgős"].map(x=>`<option ${x===t.priority?"selected":""}>${x}</option>`).join("")}</select><label>Határidő</label><input class="field" id="taskDue" type="date" value="${esc(t.due||"")}"><label>Felelős</label>${isAdmin()?`<select class="field" id="taskAssignee">${`<option value="" ${!t.assignee?"selected":""}>Nincs felelős</option>`+users().map(u=>`<option value="${u.id}" ${u.id===t.assignee?"selected":""}>${esc(u.name)}</option>`).join("")}</select>`:`<div class="field readonly">${esc(uname(t.assignee))}</div>`}<label>Terület</label><input class="field" id="taskArea" value="${esc(t.area||"")}"></div><div class="drawer-section"><h3>MEGJEGYZÉS</h3><textarea class="field" id="taskNotes">${esc(t.notes||"")}</textarea></div><div class="drawer-section"><h3>NOTION METAADATOK</h3><div class="notion-meta">
   ${t.project?`<div><span>Projekt</span><strong>${esc(t.project)}</strong></div>`:""}
   ${(t.tags||[]).length?`<div><span>Címkék</span><strong>${(t.tags||[]).map(x=>esc(x)).join(", ")}</strong></div>`:""}
@@ -140,9 +150,9 @@ function openTask(id){
  $$('[data-cid]').forEach(c=>c.onchange=async()=>{const fresh=visibleTasks().find(x=>x.id===id);const cl=fresh.checklist.map(x=>x.id===c.dataset.cid?{...x,done:c.checked}:x);await patch("tasks",id,{checklist:cl})});
  $("#addChecklist").onclick=async()=>{const text=prompt("Checklist elem neve");if(!text)return;const fresh=visibleTasks().find(x=>x.id===id);await patch("tasks",id,{checklist:[...(fresh.checklist||[]),{id:"c"+Date.now(),text,done:false}]});openTask(id)};
  $("#commentForm").onsubmit=async e=>{e.preventDefault();const text=$("#commentText").value.trim();if(!text)return;await api(`/api/tasks/${id}/comments`,{method:"POST",body:JSON.stringify({text})});await load();openTask(id)};
- async function saveTaskDrawer(){const body={title:$("#taskTitle").value.trim(),brand:$("#taskBrand").value,status:$("#taskStatus").value,priority:$("#taskPriority").value,due:$("#taskDue").value,area:$("#taskArea").value,notes:$("#taskNotes").value};if($("#taskAssignee"))body.assignee=$("#taskAssignee").value||null;await patch("tasks",id,body);render()}
+ async function saveTaskDrawer(){const body={title:$("#taskTitle").value.trim(),brand:$("#taskBrand").value,status:$("#taskStatus").value,priority:$("#taskPriority").value,due:$("#taskDue").value,area:$("#taskArea").value,notes:$("#taskNotes").value};if($("#taskAssignee"))body.assignee=$("#taskAssignee").value||null;await patch("tasks",id,body)}
 }
-function closeDrawer(){$("#drawer").classList.add("hidden");$("#drawerBackdrop").classList.add("hidden")}
+function closeDrawer(){document.body.classList.remove("drawer-open");$("#drawer").classList.add("hidden");$("#drawerBackdrop").classList.add("hidden")}
 function toggleQuick(force){const q=$("#quickMenu");const show=force===undefined?q.classList.contains("hidden"):force;q.classList.toggle("hidden",!show)}
 function openCreate(kind){
  const titles={task:"Új feladat",content:"Új tartalom",idea:"Új tartalomötlet",note:"Új jegyzet"};$("#modalBackdrop").classList.remove("hidden");
