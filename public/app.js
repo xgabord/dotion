@@ -24,7 +24,7 @@ function showLogin(){
   $("#app").classList.add("hidden");$("#login").classList.remove("hidden");
   fetch("/api/auth/users").then(r=>r.json()).then(list=>{$("#loginUser").innerHTML=list.map(u=>`<option value="${u.id}">${esc(u.name)}</option>`).join("")});
 }
-$("#loginForm").addEventListener("submit",async e=>{e.preventDefault();$("#loginError").textContent="";try{await api("/api/auth/login",{method:"POST",body:JSON.stringify({userId:$("#loginUser").value,password:$("#loginPassword").value})});await boot()}catch(err){$("#loginError").textContent="Hibás felhasználó vagy jelszó"}});
+$("#loginForm").addEventListener("submit",async e=>{e.preventDefault();$("#loginError").textContent="";try{await api("/api/auth/login",{method:"POST",body:JSON.stringify({userId:$("#loginUser").value})});await boot()}catch(err){$("#loginError").textContent="Sikertelen belépés"}});
 function renderMe(){if(!state.me)return;$("#meBox").innerHTML=`<div class="avatar">${esc(state.me.avatar)}</div><span>${esc(state.me.name)}</span><button class="logout" id="logoutBtn">Kilépés</button>`;$("#logoutBtn").onclick=async()=>{await api("/api/auth/logout",{method:"POST"});location.reload()}}
 function bind(){
   $$(".nav-item[data-view]").forEach(b=>b.onclick=()=>go(b.dataset.view));
