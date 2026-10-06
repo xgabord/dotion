@@ -37,3 +37,5 @@ html,body{max-width:100%;overflow-x:hidden}
   .props{grid-template-columns:92px minmax(0,1fr)}
   .notion-meta>div{grid-template-columns:88px minmax(0,1fr)}
 }
+
+.render-error{max-width:520px;margin:48px auto;padding:20px;border:1px solid var(--border);border-radius:10px;background:#fff;display:grid;gap:10px}.render-error strong{font-size:15px}.render-error span{font-size:12px;color:#a63830;overflow-wrap:anywhere}.render-error button{justify-self:start}
